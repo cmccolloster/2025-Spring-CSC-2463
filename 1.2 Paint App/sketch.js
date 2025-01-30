@@ -26,7 +26,7 @@ function setup()
   ];
 
   selectedColor = colors[0]; // Default color is Red
-  background(color(200)); // Background/canvas is Light grey
+  background(230); // Background/canvas is Light grey
 }
 
 function drawUI() 
@@ -66,7 +66,7 @@ function mousePressed()
     // Check if the clear button is clicked
     if (mouseY > height - 60) 
     {
-      background(color(200));
+      background(230);
     }
   }
 }
