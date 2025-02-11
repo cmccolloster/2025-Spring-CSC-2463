@@ -10,16 +10,16 @@ var Green = [];
 var Ninja = [];
 var count = 3; // Number of sprite instances
 
-// preload() is called before setup() and is used to load assets
 function preload() 
 {
   bgImage = loadImage("assets/GrassBackground.png");
+
   for (var i = 0; i < count; i++) 
   {
     // Create new spriteAnimation objects and store them in arrays
-    SpelunkyGuy[i] = new spriteAnimation("assets/SpelunkyGuy.png", random(560) + 40, random(440) + 40);
-    Green[i] = new spriteAnimation("assets/Green.png", random(560) + 40, random(440) + 40);
-    Ninja[i] = new spriteAnimation("assets/Ninja.png", random(560) + 40, random(440) + 40);
+    SpelunkyGuy[i] = new spriteAnimation("assets/SpelunkyGuy.png", random(560) + 50, random(560) + 25);
+    Green[i] = new spriteAnimation("assets/Green.png", random(560) + 50, random(560) + 25);
+    Ninja[i] = new spriteAnimation("assets/Ninja.png", random(560) + 50, random(560) + 25);
   }
 }
 
@@ -43,90 +43,88 @@ function draw()
   }
 }
 
-// Function constructor to create sprite animation objects
-function spriteAnimation(imageName, x, y) 
+// Class to create sprite animation objects
+class spriteAnimation 
 {
-  let spritesheet = loadImage(imageName); // Load sprite sheet
-  let frame = 0;
-  let moving = 0;
-  let facing = 0;
+  constructor(spriteName, x, y) 
+  {
+    this.spritesheet = loadImage(spriteName); // Load sprite sheet
+    this.frame = 0; // Current animation frame
+    this.x = x;
+    this.y = y;
+    this.moving = 0; // Movement state (0 = idle, 1 = move right, -1 = move left)
+    this.facing = 1; // Facing state (1 = face right, -1 = face left)
+  }
 
-  function draw() 
+  draw() 
   {
     push(); // Save the current drawing settings
-    translate(x, y); // Move sprite to its position
+    translate(this.x, this.y); // Move sprite to its position
 
-    if (facing < 0) 
+    // Flip sprite if facing left
+    if (this.facing < 0) 
     {
-      scale(-1.0, 1.0); // Flip sprite if facing left
+      scale(-1, 1);
     }
 
-    if (moving == 0) 
+    // Adjust the drawing position when flipped
+    let drawX = (this.facing < 0) ? -40 : 0; 
+
+    if (this.moving === 0) 
     {
-      image(spritesheet, 0, 0, 80, 80, 0, 0, 80, 80); // Draw idle frame
+      image(this.spritesheet, 0, 0, 80, 80, 0, 0, 80, 80); // Draw idle frame
     } 
-    else
+    else 
     {
-      
-      image(spritesheet, 0, 0, 80, 80, (frame + 1) * 80, 0, 80, 80); // Draw walking animation
+      // Walking animation
+      image(this.spritesheet, 0, 0, 80, 80, (this.frame + 1) * 80, 0, 80, 80); // Draw walking animation
 
-      if (frameCount % 4 == 0) 
+      if (frameCount % 4 === 0) 
       {
-        frame = (frame + 1) % 8;
-        x += 6 * moving;
+        this.frame = (this.frame + 1) % 8;
+        this.x += 6 * this.moving;
 
-        // Reverse direction if hitting screen edge
-        if (x < 40 || x > width - 40) 
+        // Reverse direction if hitting the screen edge
+        if (this.x < 40 || this.x > width - 40) 
         {
-          moving = -moving;
-          facing = -facing;
+          this.moving = -this.moving;
+          this.facing = -this.facing;
         }
       }
     }
-    pop();
+    pop();  // Restore transformation settings
   }
 
-  function stop() 
+  stop() 
   {
-    moving = 0;
-    frame = 3;
+    this.moving = 0;
+    this.frame = 3; // Set to idle frame
   }
 
-  function go(direction) 
+  go(direction) 
   {
-    moving = direction;
-    facing = direction;
+    this.moving = direction;
+    this.facing = direction;
   }
-
-  // Return an object with methods to interact with the sprite
-  return { draw, stop, go };
 }
+
 
 // Handle key press events
 function keyPressed() 
 {
-  if (keyCode === RIGHT_ARROW) 
+  if (keyCode === RIGHT_ARROW || keyCode === LEFT_ARROW) 
   {
-    // Move all sprites to the right
-    for (var i = 0; i < count; i++) 
-    {
-      SpelunkyGuy[i].go(+1);
-      Green[i].go(+1);
-      Ninja[i].go(+1);
-    }
-  }
+    let direction = (keyCode === RIGHT_ARROW) ? 1 : -1; // Determine direction
 
-  if (keyCode === LEFT_ARROW) 
-  {
-    // Move all sprites to the left
     for (var i = 0; i < count; i++) 
     {
-      SpelunkyGuy[i].go(-1);
-      Green[i].go(-1);
-      Ninja[i].go(-1);
+      SpelunkyGuy[i].go(direction);
+      Green[i].go(direction);
+      Ninja[i].go(direction);
     }
   }
 }
+
 
 // Handle key release events
 function keyReleased() 
