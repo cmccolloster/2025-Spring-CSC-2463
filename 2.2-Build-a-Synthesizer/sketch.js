@@ -7,7 +7,6 @@
 let synth, filter, freqSlider, octaveSlider;
 let pressedKeys = new Set();
 let baseOctave = 4;
-let isPlaying = false;
 let timeouts = [];
 let notes = {
     'A': 'C', 
