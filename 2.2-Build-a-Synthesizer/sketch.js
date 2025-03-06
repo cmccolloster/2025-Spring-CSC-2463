@@ -1,8 +1,10 @@
 // Name: Christopher McColloster
-// Date: 3/05/25
+// Date: 3/06/25
 // Class: CSC 2463
 // Teacher: Andrew Webb
 // Assignment: 2.2 Build a Synthesizer
+// I am using the code created in class by our TA
+// Treya Nash as a starting point.
 
 let synth, filter, freqSlider, octaveSlider;
 let pressedKeys = new Set();
@@ -45,7 +47,6 @@ function draw() {
   text("Press A-K to play notes", 20, 50);
   text("Move the slider to adjust the filter frequency", 20, 240);
   text("Adjust Octave (-1, 0, +1)", 20, 340);
-  // text("Auto-play: " + (isPlaying ? "ON" : "OFF"), 20, 330);
 
   // Update filter frequency based on slider value
   filter.frequency.value = freqSlider.value();
