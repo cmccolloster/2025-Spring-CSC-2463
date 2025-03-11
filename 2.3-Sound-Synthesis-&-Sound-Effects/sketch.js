@@ -1,3 +1,11 @@
+// Name: Christopher McColloster
+// Date: 3/11/25
+// Class: CSC 2463
+// Teacher: Andrew Webb
+// Assignment: 2.3 Sound Synthesis & Sound Effects
+// I am using the code created in class by our TA
+// Treya Nash as a starting point.
+
 let imgBlock, imgHit, imgAfterHit;
 let oscCoin, oscThud, noise, filter, lfo, osc;
 let blockState = "default";
